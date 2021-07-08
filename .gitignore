@@ -1,5 +1,6 @@
 # Project exclude paths
 /.gradle/
+/.idea/
 /build/
 /out/production/classes/
 /out/test/classes/
