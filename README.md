@@ -22,6 +22,77 @@ https://jojoldu.tistory.com/539
  이렇게 테스트 코드를 직접 구축해보고 경험해보니 과거 기능 수정 때마다 톰캣 재시작을 해가면 System.out.println(1), 2, 3 ...을 찍어가며 프로그램을 개발/유지보수 해왔던 내가 싫어진다.
 물론 그런 노가다도 직접 경험해봤기에, 더 테스트코드의 위력이 더 와닿았다.
 
+# 210713 : 교재내용 정리
+# com.emenu.comito.web.HelloController 페이지 참고.
+@SpringBootApplication
+- 스프링 부트의 자동 설정, 스프링 Bean 읽기와 생성을 모두 자동으로 설정되도록 한다.
+- 해당 위치부터 설정을 읽어 가기 때문에 이 클래스는 항상 프로젝트의 최상단에 위치해야만 한다.
+
+SpringApplication.run(Application.class, args);
+- 내장 WAS(Web Application Server)를 실행한다.
+/*
+   내장 WAS란?
+   별도로 외부에 WAS를 두지 않고 애플리케이션을 실행할 때 내부에서 WAS를 실행하는 것을 의미한다.
+   이렇게 되면 항상 서버에 톰캣을 설치할 필요가 없게 되고,
+   스프링 부트로 만들어진 Jar(실행 가능한 Java 패키징 파일)로 실행하면 된다.
+
+   장점
+   언제 어디서나 같은 환경에서 스프링 부트를 배포할 수 있다.
+*/
+
+@RestController
+- 컨트롤러를 JSON을 반환하는 컨트롤러로 만들어 준다.
+- 예전에는 @ResponseBody를 각 메서드마다 선언했던 것을 한번에 사용할 수 있게 해준다고 생각하면 된다.
+
+# test com.emenu.comito.web.HelloControllerTest 페이지 참고
+@ExtendWith(SpringExtension.class)
+- SpringExtension integrates the Spring TestContext Framework into JUnit 5's Jupiter programming model.
+참고 : https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/junit/jupiter/SpringExtension.html
+
+@WebMvcTest(controllers = HelloController.class)
+- 여러 스프링 테스트 어노테이션 중, Web(Spring MVC)에 집중할 수 있는 어노테이션
+- 선언할 경우 @Controller, @ControllerAdvice 등을 사용할 수 있다.
+  단, @Service, @Component, @Repository 등은 사용할 수 없다.
+  
+ @Autowired
+ - 스프링이 관리하는 빈(Bean)을 주입 받는다.
+
+ 빈(Bean)이란?
+  Spring IoC 컨테이너가 관리하는 자바 객체를 빈(Bean)이라는 용어로 부른다.
+  우리가 new 연산자로 어떤 객체를 생성했을 때 그 객체는 빈이 아니다.
+  ApplicationContext.getBean()으로 얻어질 수 있는 객체는 빈이다.
+  즉 Spring에서의 빈은 ApplicationContext가 알고있는 객체, 즉 ApplicationContext가 만들어서 그 안에 담고있는 객체를 의미한다.
+
+ 참고 : https://atoz-develop.tistory.com/entry/Spring-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B9%88Bean%EC%9D%98-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%83%9D%EC%84%B1-%EC%9B%90%EB%A6%AC
+     
+ private MockMvc mvc
+ - 웹 API를 테스트할 때 사용한다.
+ - 스프링 MVC테스트의 시작점이다.
+ - 이 클래스를 통해 Http GET, POST 등에 대한 테스트를 할 수 있다.
+ 
+ mvc.perform(get("/hello"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(hello));
+ - MockMvc를 통해 /hello 주소로 Http GET 요청을 한다.
+ - 체이닝이 지원되어 아래와 같이 여러 검증 기능을 이어서 선언할 수 있다.   
+ 
+ .andExpect(status().isOk())
+ - mvc.perform의 결과를 검증한다.
+ - HTTP Header의 Status를 검증한다.
+ - 200, 404, 500 등의 상태를 검증한다.
+ - 여기선 OK 즉, 200인지를 검증한다.
+
+ .andExpect(content().string(hello));
+ - mvc.perform의 결과를 검증한다.
+ - 응답 본문의 내용을 검증한다.
+ - Controller에서 "hello"를 리턴하기 때문에 이 값이 맞는지 검증한다.
+
+롬복?
+ 자바 개발할 때 자주 사용하는 코드 Getter, Setter, 기본생성자, toString 등을 어노테이션을 자동 생성해 준다.
+
+            
+
+
 
 
 
