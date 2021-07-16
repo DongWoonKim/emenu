@@ -89,6 +89,61 @@ SpringApplication.run(Application.class, args);
 
 롬복?
  자바 개발할 때 자주 사용하는 코드 Getter, Setter, 기본생성자, toString 등을 어노테이션을 자동 생성해 준다.
+ 
+# 210717 : 교재내용 정리
+JPA : 자바 표준 ORM
+
+MyBatis, iBatis는 ORM이 아니다. SQL Mapper이다. ORM은 객체를 매핑하는 것이고, SQL Mapper는 쿼리를 매핑한다.
+
+관계형 데이터베이스와 객체지향 프로그래밍 언어의 패러다임이 서로 다른데, 객체를 데이터베이스에 저장하려고 하면 여러 문제가 발생한다.
+이를 패러다임 불일치라고 한다.
+
+객체지향 프로그래밍에서 부모가 되는 객체를 가져오려면 어떻게 해야할까?
+
+User user   = findUser();
+Group group = user.getGroup();
+
+명확하게 User와 Group은 부모-자식 관계임을 알 수 잇다.
+User가 본인이 속한 Group을 가져온 코드이기 때문이다. 하지만 여기에 데이터베이스가 추가되면 다음과 같이 변경이 된다.
+
+User user   = userDao.findUser();
+Group group = groupDao.findGroup(user.getGroupId());
+
+User 따로, Group 따로 조회가 된다. User와 Group이 어떤 관계인지 알 수 있을까?
+상속, 1:N 등 다양한 객체 모델링을 데이터베이스로는 구현할 수 없다. 그러다 보니 웹 애플리케이션 개발은 점점 데이터 베이스 모델링에만 집중하게 된다.
+JPA는 이런 문제점을 해결하기 위해 등장하게 된다.
+
+서로 지향하는 바가 다른 2개 영역(객체지향 프로그래밍 언어와 관계형 데이터베이스)을 중간에서 패러다임 일치를 시켜주기 위한 기술이다.
+즉, 개발자는 객체지향적으로 프로그래밍을 하고, JPA가 이를 관계형 데이터베이스에 맞게 SQL을 대신 생성해서 실행한다.
+개발자는 항상 객체지향적으로 코드를 표현할 수 있으니 더는 SQL에 종속적인 개발을 하지 않아도 된다.
+
+#Spring Data JPA
+JPA는 인터페이스로서 자바 표준명세서이다. 인터페이스인 JPA를 사용하기 위해서는 구현체가 필요하다. 
+하지만 Spring에서 JPA를 사용할 때는 구현체를 직접 다루지 않는다.
+
+구현체들을 좀 더 쉽게 사용하고자 추상화시킨 Spring Data JPA라는 모듈을 이용하여 JPA 기술을 다룬다.
+이들의 관계를 보면 다음과 같다.
+- JPA <- Hibernate <- Spring Data JPA
+
+Spring Data JPA가 등장한 이유
+- 구현체 교체의 용이성
+- 저장소 교체의 용이성
+
+'구현체 교체의 용이성'이란 Hibernate 외에 다른 구현체로 쉽게 교체하기 위함이다. Hibernate가 언젠가 수명을 다해서 새로운 JPA 구현체가 대세로 떠오를 때,
+Spring Data JPA를 쓰는 중이라면 아주 쉽게 교체할 수 있다. Spring Data JPA 내부에서 구현체 매핑을 지원해주기 때문이다.
+
+'저장소 교체의 용이성'이란 관계형 데이터베이스 외에 다른 저장소로 쉽게 교체하기 위함이다. 관계형 디비에서 NoSQL로 교체할 경우 개발자는 Spring Data JPA에서 의존성만 교체를 해주면된다.
+이는 Spring Data의 하위 프로젝트들은 기본적인 CRUD의 인터페이스가 같기 때문이다.
+
+
+
+
+
+
+
+
+
+
 
             
 
