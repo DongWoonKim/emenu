@@ -1,7 +1,7 @@
-./.gradle/
-./.idea/
-./build/
-./out/production/classes/
-./out/test/classes/
-./src/main/resources/application-oauth.properties
+.gradle
+.idea
 
+application-real-oauth.properties
+
+build
+out
