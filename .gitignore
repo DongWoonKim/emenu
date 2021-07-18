@@ -5,9 +5,4 @@
 /out/production/classes/
 /out/test/classes/
 /src/main/resources/application-oauth.properties
-
 application-oauth.properties
-
-$ git rm -r --cached .idea
-$ git commit -m "remove intellij .idea directory"
-$ git push origin master
