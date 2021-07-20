@@ -1,5 +1,6 @@
 package com.emenu.comito.web;
 
+import com.emenu.comito.config.auth.LoginUser;
 import com.emenu.comito.config.auth.dto.SessionUser;
 import com.emenu.comito.service.posts.PostsService;
 import com.emenu.comito.web.dto.PostsResponseDto;
@@ -26,9 +27,8 @@ public class IndexController {
      */
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if(user != null) {
             model.addAttribute("userName", user.getName());
